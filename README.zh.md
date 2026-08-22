@@ -1,0 +1,80 @@
+# dsh-qq-skin
+
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）的 **QQ NT 风格皮肤插件**：亮暗统一为 QQ NT 语言——**亮色白净克制**（表面近白、边框/hover 中性，品牌蓝 `#12B7F5` 与浅蓝气泡 `#A8E3FF` 只做辨识度点缀），**暗色沉稳蓝灰**（基座 `#101822`，降饱和耐看，蓝同样只点缀），一眼可辨。
+
+[English](README.md)
+
+> **原理。** 皮肤由两层可逆贡献组成，不注册新主题 id，也不改动用户的浅色/深色/跟随系统偏好：
+> - **token 层** —— 激活时通过 `ctx.theme.overrideTokens('dsh-qq-skin', …)` 叠加 `--dsw-*` 语义 token；每个 token 带 `{ light, dark }` 双色值，皮肤跟随当前基座而不是与它对抗。亮色蓝色贯穿表面、边框、交互与滚动条；暗色为 `#101822` 起的沉稳蓝灰刻度，蓝色只做点缀（品牌、气泡、主按钮）。
+> - **布局层** —— 注入一个全局 `<style>` 标签（`qq-layout.ts`），负责几何与结构：聊天流居中收窄、用户气泡浅蓝带"尾巴"、助手消息左侧头像圆标 + 白色卡片（按 `data-chat-flow-kind='assistant-step'` 命中）、输入区胶囊化。品牌区保持产品原样，QQ 感完全由蓝色 token 层体现。颜色一律经 `--dsw-*` token，暗色变体由 `body[data-ds-dark-theme]` 门控。
+>
+> 卸载时两层都随 effect 清理完整还原，产品默认外观回归。
+
+## 覆盖范围
+
+| 区域 | 机制 |
+| --- | --- |
+| 品牌与主操作（QQ 蓝） | `--dsw-alias-brand-primary`、`--dsw-alias-button-primary-*`、`--dsw-alias-state-business-*` |
+| 画布与表面（亮色白净） | `--dsw-alias-bg-base`（`#F7F9FB`）、`--dsw-alias-bg-layer-1..3`、`--dsw-alias-bg-overlay` |
+| 会话气泡（浅蓝 `#A8E3FF`） | `--dsw-specific-bubble`、`--dsw-specific-bubble-highlight` + 布局层圆角/阴影 |
+| 助手消息 | 布局层头像圆标（token 色）+ 白卡片描边（`--dsw-alias-bg-layer-1` + `border-l1`） |
+| 聊天流 | 布局层居中收窄（`data-chat-flow`） |
+| 输入区 | 布局层胶囊化（`data-composer-card`）+ `--dsw-specific-input-major` |
+| 侧边栏（亮色白净 / 暗色蓝灰） | `--dsw-specific-sidebar-fill`（`#F2F5F8`）、`--dsw-specific-sidebar-nav-item-*` + 布局层分割线 |
+| 文字与边框 | `--dsw-alias-label-*`、`--dsw-alias-border-l1..l4`（蓝调描边） |
+| 状态色（QQ 绿/红/琥珀） | `--dsw-alias-state-success/error/warn-*` |
+| 静态色板（组件直引，统一天蓝） | `--dsw-static-deepseek-*`、`--dsw-static-blue-*`（重映射为 `#12B7F5` 天蓝刻度） |
+| Markdown、滚动条（QQ 蓝）、菜单、提示 | `--dsw-alias-markdown-*`、`--dsw-alias-scrollbar-*`、`--dsw-specific-menu`、`--dsw-alias-tooltip-bg` |
+
+未覆盖的 token 保持产品默认，QQ 皮肤运行中其他区域依然清晰一致。
+
+## 安装
+
+一条命令即可装进 `web` profile：
+
+```sh
+dsh plugin --profile web add dsh-qq-skin
+```
+
+这就是全部流程：`dsh plugin` 首次使用自动初始化 profile，在 profile 目录里执行
+`pnpm add dsh-qq-skin`，然后按已安装状态协调 profile 的 bundle 层——因为
+`dsh-qq-skin` 声明了 `dsh.bundle.patch`（→ `cordis.patch.yml`），会自动加入
+bundle 栈。下次 `dsh web` 启动即装配它，客户端 bundle 被加载，`ui-theme`
+激活后皮肤层立即叠加。
+
+从本地开发目录安装（路径以你调用命令的目录为锚点；`link:` 前缀保持实时链接）：
+
+```sh
+dsh plugin --profile web add ../dsh-qq-skin
+dsh plugin --profile web add link:../dsh-qq-skin
+```
+
+卸载同样一条命令：
+
+```sh
+dsh plugin --profile web remove dsh-qq-skin
+```
+
+插件声明了 `dsh.client`（`platform: web`）并注入 `theme` 服务，Web 启动会加载
+其客户端 bundle，`ui-theme` 激活后立即叠加皮肤层。
+
+## 开发
+
+```sh
+pnpm install
+pnpm run typecheck   # tsc --noEmit
+pnpm test            # vitest（token 形状 + 布局注入 + apply 接线）
+pnpm run build       # tsc + tsdown → lib/index.js（宿主）+ lib/client.js（浏览器闭包工厂）
+```
+
+客户端 bundle 采用与 harness `clientBundle` 预设相同的双面布局：`lib/index.js`
+是普通 ESM 宿主条目，`lib/client.js` 是 Web 启动消费的 `window.__ModuleLoader__`
+闭包工厂格式。皮肤不经过构建期 CSS 管线：布局样式作为内联字符串打进客户端
+bundle（`qq-layout.ts` 的 `QQ_LAYOUT_CSS`），运行时经 `document.createElement('style')`
+注入，与 ui-theme 的 `installThemeStyles` 同构，卸载随 effect 移除。布局选择器
+依赖客户端 CSS Modules 的 `[hash]_[local]` 类名模式（`[class$="_localName"]`
+结尾命中）与组件源码中的 `data-*` 属性钩子，不依赖构建期 hash 值。
+
+## License
+
+MIT

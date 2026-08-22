@@ -1,0 +1,5 @@
+# dsh-qq-skin — bundle layer contributed when a profile lists this bundle.
+# A patch replaces the targeted row's whole config, so keep this row minimal.
+- insert:
+  - id: qq-skin
+    name: dsh-qq-skin

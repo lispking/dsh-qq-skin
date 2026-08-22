@@ -1,0 +1,11 @@
+# dsh-qq-skin — 在 DeepSeek Harness 的 web profile 中一键启用 QQ 皮肤。
+#
+# 一键安装（自动初始化 profile、pnpm add、并按 dsh.bundle 声明自动纳入 bundle 层）：
+#   dsh plugin --profile web add dsh-qq-skin
+#   dsh plugin --profile web add ../dsh-qq-skin        # 本地目录
+#   dsh plugin --profile web add link:../dsh-qq-skin   # 本地目录（保持链接）
+#
+# 卸载：
+#   dsh plugin --profile web remove dsh-qq-skin
+#
+# 皮肤在插件激活时叠加（亮/暗两套色值），卸载插件即还原，无需额外配置。
