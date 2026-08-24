@@ -1,14 +1,31 @@
 # dsh-qq-skin
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）的 **QQ NT 风格皮肤插件**：亮暗统一为 QQ NT 语言——**亮色白净克制**（表面近白、边框/hover 中性，品牌蓝 `#12B7F5` 与浅蓝气泡 `#A8E3FF` 只做辨识度点缀），**暗色沉稳蓝灰**（基座 `#101822`，降饱和耐看，蓝同样只点缀），一眼可辨。
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）的 **QQ NT 风格皮肤插件**：亮暗统一为 QQ NT 语言——**亮色白净克制**（表面近白、边框/hover 中性，品牌蓝 `#12B7F5` 与浅蓝气泡 `#A8E3FF` 只做辨识度点缀），**暗色沉稳蓝灰**（基座 `#101822`，降饱和耐看，蓝同样只点缀），一眼可辨。内置三种色板变体（经典蓝 / 炫彩紫 / 简洁白），开关与尺寸均可配置。
 
 [English](README.md)
 
 > **原理。** 皮肤由两层可逆贡献组成，不注册新主题 id，也不改动用户的浅色/深色/跟随系统偏好：
-> - **token 层** —— 激活时通过 `ctx.theme.overrideTokens('dsh-qq-skin', …)` 叠加 `--dsw-*` 语义 token；每个 token 带 `{ light, dark }` 双色值，皮肤跟随当前基座而不是与它对抗。亮色蓝色贯穿表面、边框、交互与滚动条；暗色为 `#101822` 起的沉稳蓝灰刻度，蓝色只做点缀（品牌、气泡、主按钮）。
-> - **布局层** —— 注入一个全局 `<style>` 标签（`qq-layout.ts`），负责几何与结构：聊天流居中收窄、用户气泡浅蓝带"尾巴"、助手消息左侧头像圆标 + 白色卡片（按 `data-chat-flow-kind='assistant-step'` 命中）、输入区胶囊化。品牌区保持产品原样，QQ 感完全由蓝色 token 层体现。颜色一律经 `--dsw-*` token，暗色变体由 `body[data-ds-dark-theme]` 门控。
+> - **token 层** —— 激活时通过 `ctx.theme.overrideTokens('dsh-qq-skin', …)` 叠加 `--dsw-*` 语义 token；每个 token 带 `{ light, dark }` 双色值，皮肤跟随当前基座而不是与它对抗。亮色蓝色贯穿表面、边框、交互与滚动条；暗色为 `#101822` 起的沉稳蓝灰刻度，蓝色只做点缀（品牌、气泡、主按钮）。token 集按色板变体生成（`buildTokenOverrides(palette)`）：三种色板共享中性蓝灰骨架，仅在人格 token 上分化。
+> - **布局层** —— 注入一个全局 `<style>` 标签（`qq-layout.ts`），负责几何与结构：聊天流居中收窄、用户气泡浅蓝带"尾巴"、助手消息左侧头像圆标 + 白色卡片（按 `data-chat-flow-kind='assistant-step'` 命中）、输入区胶囊化、会话头部细分割线、时间戳与滚动条 QQ 化。品牌区保持产品原样，QQ 感完全由蓝色 token 层体现。颜色一律经 `--dsw-*` token，暗色变体由 `body[data-ds-dark-theme]` 门控。CSS 按配置生成（`buildQQLayoutCss`）。
 >
 > 卸载时两层都随 effect 清理完整还原，产品默认外观回归。
+
+## 配置
+
+插件以 cordis 函数插件方式接收配置（`apply(ctx, config)`），未配置的字段回落默认值：
+
+| 配置项 | 默认值 | 说明 |
+| --- | --- | --- |
+| `palette` | `'classic'` | 色板变体：`classic` 经典蓝 / `vivid` 炫彩紫 / `clean` 简洁白 |
+| `bubbleTail` | `true` | 用户气泡右侧"尾巴"小三角 |
+| `assistantAvatar` | `true` | 助手消息左侧官方 QQ 企鹅头像圆标 |
+| `chatMaxWidth` | `880` | 聊天流最大宽度（px） |
+
+示例（在 profile 的插件配置里指定）：
+
+```json
+{ "palette": "vivid", "bubbleTail": false, "chatMaxWidth": 720 }
+```
 
 ## 覆盖范围
 
@@ -18,8 +35,11 @@
 | 画布与表面（亮色白净） | `--dsw-alias-bg-base`（`#F7F9FB`）、`--dsw-alias-bg-layer-1..3`、`--dsw-alias-bg-overlay` |
 | 会话气泡（浅蓝 `#A8E3FF`） | `--dsw-specific-bubble`、`--dsw-specific-bubble-highlight` + 布局层圆角/阴影 |
 | 助手消息 | 布局层头像圆标（token 色）+ 白卡片描边（`--dsw-alias-bg-layer-1` + `border-l1`） |
-| 聊天流 | 布局层居中收窄（`data-chat-flow`） |
-| 输入区 | 布局层胶囊化（`data-composer-card`）+ `--dsw-specific-input-major` |
+| 聊天流 | 布局层居中收窄（`data-chat-flow`，宽度可配置） |
+| 输入区 | 布局层胶囊化（`data-composer-card`）+ 工具栏按钮圆角 + `--dsw-specific-input-major` |
+| 会话头部 | 布局层细分割条（`header[class$='_header']`，不误伤侧栏面板） |
+| 消息时间戳 | 布局层 QQ 风格圆片（`data-time-hover-root` + `_timeStart/_timeEnd`） |
+| 滚动条 | 布局层加宽圆角（`data-conversation-scroll`）+ `--dsw-alias-scrollbar-*` |
 | 侧边栏（亮色白净 / 暗色蓝灰） | `--dsw-specific-sidebar-fill`（`#F2F5F8`）、`--dsw-specific-sidebar-nav-item-*` + 布局层分割线 |
 | 文字与边框 | `--dsw-alias-label-*`、`--dsw-alias-border-l1..l4`（蓝调描边） |
 | 状态色（QQ 绿/红/琥珀） | `--dsw-alias-state-success/error/warn-*` |
