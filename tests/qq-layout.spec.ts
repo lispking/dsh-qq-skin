@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@deepseek-ai/cordis'
-import { installQQLayout, QQ_LAYOUT_CSS, QQ_LAYOUT_PLUGIN } from '../src/client/qq-layout.ts'
+import {
+  buildQQLayoutCss, installQQLayout, QQ_LAYOUT_CSS, QQ_LAYOUT_PLUGIN,
+} from '../src/client/qq-layout.ts'
+import { QQ_SKIN_DEFAULT_CONFIG } from '../src/client/config.ts'
 
 /** Minimal document/head stand-in for the DOM injection under node. */
 function stubDocument() {
@@ -67,5 +70,37 @@ describe('QQ NT layout layer', () => {
     await ctx.fiber.dispose()
 
     expect(tag.remove).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('QQ NT layout config branches', () => {
+  it('bubble tail rule appears by default and can be disabled', () => {
+    const tailRule = `[class$='_bubble']::after`
+    expect(QQ_LAYOUT_CSS).toContain(tailRule)
+    const off = buildQQLayoutCss({ ...QQ_SKIN_DEFAULT_CONFIG, bubbleTail: false })
+    expect(off).not.toContain(tailRule)
+    // The dark-mode tail companion follows the same switch.
+    expect(off).not.toContain(`body[data-ds-dark-theme] [class$='_bubble']::after`)
+  })
+
+  it('assistant avatar rule appears by default and can be disabled', () => {
+    const avatarRule = "[data-chat-flow-kind='assistant-step']::before"
+    expect(QQ_LAYOUT_CSS).toContain(avatarRule)
+    const off = buildQQLayoutCss({ ...QQ_SKIN_DEFAULT_CONFIG, assistantAvatar: false })
+    expect(off).not.toContain(avatarRule)
+  })
+
+  it('chat flow width follows the config value', () => {
+    expect(QQ_LAYOUT_CSS).toContain(`max-width: ${QQ_SKIN_DEFAULT_CONFIG.chatMaxWidth}px`)
+    const narrow = buildQQLayoutCss({ ...QQ_SKIN_DEFAULT_CONFIG, chatMaxWidth: 720 })
+    expect(narrow).toContain('max-width: 720px')
+    expect(narrow).not.toContain(`max-width: ${QQ_SKIN_DEFAULT_CONFIG.chatMaxWidth}px`)
+  })
+
+  it('covers the QQ NT conversation chrome hooks', () => {
+    expect(QQ_LAYOUT_CSS).toContain("header[class$='_header']")
+    expect(QQ_LAYOUT_CSS).toContain("[data-time-hover-root]")
+    expect(QQ_LAYOUT_CSS).toContain("[data-conversation-scroll]")
+    expect(QQ_LAYOUT_CSS).toContain("[class$='_tools'] button")
   })
 })
