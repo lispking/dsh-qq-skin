@@ -7,19 +7,41 @@ settings:
 importers:
 
   .:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: workspace:^
         version: link:../deepseek-harness/vendor/cordis
+      '@deepseek-ai/dsh-client-locale':
+        specifier: workspace:^
+        version: link:../deepseek-harness/packages/client/locale
       '@deepseek-ai/dsh-client-runtime':
         specifier: workspace:^
         version: link:../deepseek-harness/packages/client/runtime
+      '@deepseek-ai/dsh-client-ui-settings':
+        specifier: workspace:^
+        version: link:../deepseek-harness/packages/client/ui-settings
+      '@deepseek-ai/dsh-client-ui-slots':
+        specifier: workspace:^
+        version: link:../deepseek-harness/packages/client/ui-slots
       '@deepseek-ai/dsh-client-ui-theme':
         specifier: workspace:^
         version: link:../deepseek-harness/packages/client/ui-theme
+      '@deepseek-ai/dsh-settings':
+        specifier: workspace:^
+        version: link:../deepseek-harness/packages/settings/settings
+      '@deepseek-ai/schemastery':
+        specifier: workspace:^
+        version: link:../deepseek-harness/vendor/schemastery
       '@types/node':
         specifier: ^22.20.0
         version: 22.20.1
+      '@types/react':
+        specifier: ^18.3.31
+        version: 18.3.31
       tsdown:
         specifier: ^0.22.2
         version: 0.22.14(tsx@4.23.12)(typescript@6.0.3)

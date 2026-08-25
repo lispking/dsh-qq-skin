@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
+    "jsx": "react-jsx",
     "verbatimModuleSyntax": false,
     "strict": true,
     "noUncheckedIndexedAccess": true,

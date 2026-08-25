@@ -36,6 +36,19 @@ export default [
     dts: false,
     clean: false,
     sourcemap: true,
+    // 协作服务经运行时注入的 require 解析,不进闭包打包(react 由平台
+    // 预加载模块表提供;ui-slots/ui-settings 等是外部服务)。本地源码
+    // (./*.ts) 仍照常打包成自包含闭包。
+    external: [
+      'react',
+      'react/jsx-runtime',
+      'react-dom',
+      '@deepseek-ai/cordis',
+      '@deepseek-ai/dsh-client-runtime/client',
+      '@deepseek-ai/dsh-client-ui-slots',
+      '@deepseek-ai/dsh-client-ui-settings/client',
+      '@deepseek-ai/dsh-client-locale/client',
+    ],
     outputOptions: {
       entryFileNames: 'client.js',
       // Closure-factory contract from packages/client/tsdown.client.ts: the
