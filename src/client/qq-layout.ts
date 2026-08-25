@@ -158,6 +158,30 @@ header[class$='_header'] {
   border-left: 1px solid var(--dsw-alias-border-l2);
 }
 
+/* ── 会话列表项:QQ NT 会话行观感 ────────────────────────────────────
+   ui-workspace 的行节点是 _sessionRow/_projectRow(CSS Modules 尾部
+   匹配),选中态追加 _selected。QQ NT 的会话行是圆角悬停块 + 选中
+   浅蓝底,行内状态点(StateDot)已由静态 token 色板接管。 */
+[class$='_sessionRow'],
+[class$='_projectRow'] {
+  border-radius: 8px;
+}
+[class$='_sessionRow']:hover,
+[class$='_projectRow']:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+[class$='_sessionRow'][class$='_selected'],
+[class$='_projectRow'][class$='_selected'] {
+  background: var(--dsw-specific-sidebar-nav-item-active);
+  box-shadow: inset 2px 0 0 var(--dsw-specific-sidebar-nav-item-active-accent);
+}
+/* 行内状态点:QQ 风格小圆点(色板经 StateDot 的静态 token 已接管)。 */
+[class$='_sessionRow'] [class$='_dot'],
+[class$='_projectRow'] [class$='_dot'],
+[class$='_searchResultRow'] [class$='_dot'] {
+  border-radius: 50%;
+}
+
 /* ── 品牌区:保持产品原样 ────────────────────────────────────────────
    不隐藏鲸鱼图标、不改字标、不注入 QQ 伪元素——品牌区(sidebar.brand
    的 mark/name 插槽)原样呈现,QQ 感完全由蓝色 token 层体现。 */
@@ -188,6 +212,21 @@ body[data-ds-dark-theme] [data-time-hover-root] [class$='_timeEnd'] {
 export const QQ_LAYOUT_CSS = buildQQLayoutCss(QQ_SKIN_DEFAULT_CONFIG)
 
 /**
+ * 创建并注入一个全局 <style> 标签,返回移除函数。低层原语,供运行时
+ * 热更新(重建样式标签)与一次性安装复用;不依赖 effect 生命周期。
+ * @param config - 用户配置(气泡尾巴/头像/宽度等,可缺省)。
+ * @returns 移除该样式标签的清理函数。
+ */
+export function createQQLayoutTag(config?: QQSkinConfig): () => void {
+  if (typeof document === 'undefined') return () => {}
+  const tag = document.createElement('style')
+  tag.dataset.plugin = QQ_LAYOUT_PLUGIN
+  tag.textContent = buildQQLayoutCss(config)
+  document.head.appendChild(tag)
+  return () => { tag.remove() }
+}
+
+/**
  * 挂载 QQ NT 布局层:注入一个全局 <style> 标签,卸载时随 effect 移除。
  * 注入方式与 ui-theme 的 installThemeStyles 一致(document + ctx.effect),
  * 不依赖任何构建期 CSS 管线——样式以内联字符串打进客户端 bundle。
@@ -195,12 +234,5 @@ export const QQ_LAYOUT_CSS = buildQQLayoutCss(QQ_SKIN_DEFAULT_CONFIG)
  * @param config - 用户配置(气泡尾巴/头像/宽度等,可缺省)。
  */
 export function installQQLayout(ctx: Context, config?: QQSkinConfig): void {
-  if (typeof document === 'undefined') return
-  ctx.effect(() => {
-    const tag = document.createElement('style')
-    tag.dataset.plugin = QQ_LAYOUT_PLUGIN
-    tag.textContent = buildQQLayoutCss(config)
-    document.head.appendChild(tag)
-    return () => { tag.remove() }
-  }, `${QQ_LAYOUT_PLUGIN}: stylesheet`)
+  ctx.effect(() => createQQLayoutTag(config), `${QQ_LAYOUT_PLUGIN}: stylesheet`)
 }
