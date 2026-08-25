@@ -130,11 +130,11 @@ describe('QQ skin token palettes', () => {
     })
   })
 
-  it('black palette deepens the dark base while keeping blue as accent', () => {
+  it('black palette keeps a near-black base in both modes while keeping blue as accent', () => {
     const black = buildTokenOverrides('black')
-    expect(black['--dsw-alias-bg-base']).toMatchObject({ light: '#F7F9FB', dark: '#05070B' })
-    expect(black['--dsw-alias-bg-layer-1']).toMatchObject({ light: '#FFFFFF', dark: '#0B0F16' })
-    expect(black['--dsw-specific-sidebar-fill']).toMatchObject({ light: '#F2F5F8', dark: '#03050A' })
+    expect(black['--dsw-alias-bg-base']).toEqual({ light: '#05070B', dark: '#05070B' })
+    expect(black['--dsw-alias-bg-layer-1']).toEqual({ light: '#0B0F16', dark: '#0B0F16' })
+    expect(black['--dsw-specific-sidebar-fill']).toEqual({ light: '#03050A', dark: '#03050A' })
     expect(black['--dsw-alias-brand-primary']).toMatchObject({
       light: '#12B7F5', dark: '#4CB8FF',
     })

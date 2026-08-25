@@ -6,17 +6,20 @@
  * `ctx.theme.overrideTokens('dsh-qq-skin', …)` 叠加,移除即还原;
  * 不在此清单中的 token 保持产品默认。
  *
- * 三种色板变体共享同一套中性蓝灰骨架(文字、边框、状态色、Markdown),
- * 仅在「人格 token」上分化:
+ * classic/vivid/clean/green 共享同一套中性蓝灰骨架(文字、边框、
+ * 状态色、Markdown),仅在「人格 token」上分化;black 深空黑另起近黑
+ * 基底,亮暗基座均保持深黑观感:
  * - **classic 经典蓝**(默认)——QQ 天蓝 #12B7F5 + 浅蓝气泡 #A8E3FF,
  *   亮色白净克制、暗色沉稳蓝灰 #101822;
  * - **vivid 炫彩紫**——QQ 炫彩紫 #8A5CF5 + 淡紫气泡,暗色紫调深底,
  *   蓝紫刻度整体重映射;
  * - **clean 简洁白**——表面纯白、分割更淡,蓝只做点缀,暗色更中性的
- *   蓝灰 #0F1622。
+ *   蓝灰 #0F1622;
+ * - **green 经典绿气泡**——浅绿气泡 #95EC69,品牌仍为 QQ 蓝;
+ * - **black 深空黑**——基座 #05070B 起近黑,亮暗同值,蓝只做点缀。
  *
  * 状态色(QQ 绿 #07C160 / 红 #FA5151 / 琥珀 #FFC300)为 QQ 识别色,
- * 三种色板保持一致。几何与结构(圆角、头像、气泡尾巴、输入区胶囊)
+ * 各色板保持一致。几何与结构(圆角、头像、气泡尾巴、输入区胶囊)
  * 由 qq-layout.ts 负责。
  */
 import type { ThemeTokenOverrides } from '@deepseek-ai/dsh-client-ui-theme/client'
@@ -373,65 +376,68 @@ const GREEN_TOKEN_DELTAS: ThemeTokenOverrides = {
   '--dsw-static-blue-950': { light: '#1F3D13', dark: '#1F3D13' },
 }
 
-/** black 深空黑增量(近黑基底,蓝只做点缀,暗色更沉)。 */
+/**
+ * black 深空黑增量(近黑基底,蓝只做点缀)。亮色基座同样近黑——亮色值
+ * 与暗色同值,避免与 classic 的亮色白净骨架混淆。
+ */
 const BLACK_TOKEN_DELTAS: ThemeTokenOverrides = {
-  // 背景:近黑基底
-  '--dsw-alias-bg-base': { light: '#F7F9FB', dark: '#05070B' },
-  '--dsw-alias-bg-layer-1': { light: '#FFFFFF', dark: '#0B0F16' },
-  '--dsw-alias-bg-layer-2': { light: '#FAFBFC', dark: '#111722' },
-  '--dsw-alias-bg-layer-3': { light: '#F1F4F7', dark: '#1B2432' },
-  '--dsw-alias-bg-overlay': { light: '#FFFFFF', dark: '#111722' },
-  '--dsw-alias-bg-module-platform': { light: '#F2F5F8', dark: '#090D13' },
-  '--dsw-alias-bg-multi-select': { light: '#EDF1F5', dark: '#1B2432' },
-  '--dsw-alias-bg-skeleton': { light: 'rgba(15, 23, 42, 0.06)', dark: 'rgba(148, 163, 184, 0.07)' },
+  // 背景:近黑基底(亮暗同值)
+  '--dsw-alias-bg-base': { light: '#05070B', dark: '#05070B' },
+  '--dsw-alias-bg-layer-1': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-alias-bg-layer-2': { light: '#111722', dark: '#111722' },
+  '--dsw-alias-bg-layer-3': { light: '#1B2432', dark: '#1B2432' },
+  '--dsw-alias-bg-overlay': { light: '#111722', dark: '#111722' },
+  '--dsw-alias-bg-module-platform': { light: '#090D13', dark: '#090D13' },
+  '--dsw-alias-bg-multi-select': { light: '#1B2432', dark: '#1B2432' },
+  '--dsw-alias-bg-skeleton': { light: 'rgba(148, 163, 184, 0.07)', dark: 'rgba(148, 163, 184, 0.07)' },
 
-  // 边框:更弱的分割
-  '--dsw-alias-border-l1': { light: 'rgba(15, 23, 42, 0.08)', dark: 'rgba(255, 255, 255, 0.07)' },
-  '--dsw-alias-border-l2': { light: 'rgba(15, 23, 42, 0.12)', dark: 'rgba(255, 255, 255, 0.10)' },
-  '--dsw-alias-border-l2-darkmode-thin': { light: 'rgba(15, 23, 42, 0.08)', dark: 'rgba(255, 255, 255, 0.07)' },
-  '--dsw-alias-border-l3': { light: 'rgba(15, 23, 42, 0.16)', dark: 'rgba(255, 255, 255, 0.14)' },
-  '--dsw-alias-border-l4': { light: 'rgba(15, 23, 42, 0.20)', dark: 'rgba(255, 255, 255, 0.18)' },
+  // 边框:更弱的分割(亮暗同值)
+  '--dsw-alias-border-l1': { light: 'rgba(255, 255, 255, 0.07)', dark: 'rgba(255, 255, 255, 0.07)' },
+  '--dsw-alias-border-l2': { light: 'rgba(255, 255, 255, 0.10)', dark: 'rgba(255, 255, 255, 0.10)' },
+  '--dsw-alias-border-l2-darkmode-thin': { light: 'rgba(255, 255, 255, 0.07)', dark: 'rgba(255, 255, 255, 0.07)' },
+  '--dsw-alias-border-l3': { light: 'rgba(255, 255, 255, 0.14)', dark: 'rgba(255, 255, 255, 0.14)' },
+  '--dsw-alias-border-l4': { light: 'rgba(255, 255, 255, 0.20)', dark: 'rgba(255, 255, 255, 0.20)' },
 
-  // 文字:暗色提亮
-  '--dsw-alias-label-primary': { light: '#1F2A35', dark: '#EAF1F8' },
-  '--dsw-alias-label-secondary': { light: '#5A6B7A', dark: '#A6BACB' },
-  '--dsw-alias-label-tertiary': { light: '#7A8A97', dark: '#8499AB' },
-  '--dsw-alias-label-caption': { light: '#96A5B1', dark: '#61758A' },
-  '--dsw-alias-label-dimmed': { light: '#B4C0C9', dark: '#4A5C6E' },
+  // 文字:提亮(亮暗同值)
+  '--dsw-alias-label-primary': { light: '#EAF1F8', dark: '#EAF1F8' },
+  '--dsw-alias-label-secondary': { light: '#A6BACB', dark: '#A6BACB' },
+  '--dsw-alias-label-tertiary': { light: '#8499AB', dark: '#8499AB' },
+  '--dsw-alias-label-caption': { light: '#61758A', dark: '#61758A' },
+  '--dsw-alias-label-dimmed': { light: '#4A5C6E', dark: '#4A5C6E' },
 
-  // Markdown 暗色:更沉
-  '--dsw-alias-markdown-inline-code': { light: '#EEF1F5', dark: '#111722' },
-  '--dsw-alias-markdown-code-block': { light: '#F6F8FA', dark: '#04060A' },
-  '--dsw-alias-markdown-code-block-banner': { light: '#F1F4F7', dark: '#0B0F16' },
-  '--dsw-alias-markdown-code-segment-selected': { light: '#FFFFFF', dark: '#1B2432' },
-  '--dsw-alias-markdown-code-segment-unselected': { light: '#F1F4F7', dark: '#0B0F16' },
-  '--dsw-alias-markdown-citation': { light: '#EEF1F5', dark: '#111722' },
-  '--dsw-alias-markdown-tag': { light: '#EEF1F5', dark: '#111722' },
-  '--dsw-alias-markdown-placeholder': { light: '#F1F4F7', dark: '#0B0F16' },
+  // Markdown 更沉(亮暗同值)
+  '--dsw-alias-markdown-inline-code': { light: '#111722', dark: '#111722' },
+  '--dsw-alias-markdown-code-block': { light: '#04060A', dark: '#04060A' },
+  '--dsw-alias-markdown-code-block-banner': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-alias-markdown-code-segment-selected': { light: '#1B2432', dark: '#1B2432' },
+  '--dsw-alias-markdown-code-segment-unselected': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-alias-markdown-citation': { light: '#111722', dark: '#111722' },
+  '--dsw-alias-markdown-tag': { light: '#111722', dark: '#111722' },
+  '--dsw-alias-markdown-placeholder': { light: '#0B0F16', dark: '#0B0F16' },
 
-  // 浮层与提示:更沉
-  '--dsw-alias-toast-bg': { light: '#1B2A38', dark: '#0B0F16' },
-  '--dsw-alias-tooltip-bg': { light: '#20364F', dark: '#0B0F16' },
+  // 浮层与提示:更沉(亮暗同值)
+  '--dsw-alias-toast-bg': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-alias-tooltip-bg': { light: '#0B0F16', dark: '#0B0F16' },
 
-  // 滚动条:更沉
-  '--dsw-alias-scrollbar-bg-l1': { light: '#D9DFE6', dark: '#1B2432' },
-  '--dsw-alias-scrollbar-bg-l2': { light: '#D9DFE6', dark: '#1B2432' },
-  '--dsw-alias-scrollbar-hover-l1': { light: '#B4BEC8', dark: '#2A3A4C' },
-  '--dsw-alias-scrollbar-hover-l2': { light: '#B4BEC8', dark: '#2A3A4C' },
+  // 滚动条:更沉(亮暗同值)
+  '--dsw-alias-scrollbar-bg-l1': { light: '#1B2432', dark: '#1B2432' },
+  '--dsw-alias-scrollbar-bg-l2': { light: '#1B2432', dark: '#1B2432' },
+  '--dsw-alias-scrollbar-hover-l1': { light: '#2A3A4C', dark: '#2A3A4C' },
+  '--dsw-alias-scrollbar-hover-l2': { light: '#2A3A4C', dark: '#2A3A4C' },
 
-  // 会话专属:暗色气泡更沉
-  '--dsw-specific-bubble': { light: '#A8E3FF', dark: '#0E2638' },
-  '--dsw-specific-bubble-highlight': { light: '#7CD4FF', dark: '#16405C' },
-  '--dsw-specific-input-major': { light: '#FFFFFF', dark: '#0B0F16' },
-  '--dsw-specific-login-input': { light: '#FFFFFF', dark: '#0B0F16' },
-  '--dsw-specific-menu': { light: '#FFFFFF', dark: '#111722' },
-  '--dsw-specific-selector': { light: '#F1F4F7', dark: '#0B0F16' },
-  '--dsw-specific-tip': { light: '#F1F4F7', dark: '#0B0F16' },
+  // 会话专属:暗色气泡(亮暗同值)
+  '--dsw-specific-bubble': { light: '#0E2638', dark: '#0E2638' },
+  '--dsw-specific-bubble-highlight': { light: '#16405C', dark: '#16405C' },
+  '--dsw-specific-input-major': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-specific-login-input': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-specific-menu': { light: '#111722', dark: '#111722' },
+  '--dsw-specific-selector': { light: '#0B0F16', dark: '#0B0F16' },
+  '--dsw-specific-tip': { light: '#0B0F16', dark: '#0B0F16' },
 
-  // 侧边栏:更沉
-  '--dsw-specific-sidebar-fill': { light: '#F2F5F8', dark: '#03050A' },
-  '--dsw-specific-sidebar-nav-item-active': { light: '#FFFFFF', dark: '#111722' },
-  '--dsw-specific-sidebar-nav-item-hover': { light: '#E9EEF3', dark: '#0B0F16' },
+  // 侧边栏:更沉(亮暗同值)
+  '--dsw-specific-sidebar-fill': { light: '#03050A', dark: '#03050A' },
+  '--dsw-specific-sidebar-nav-item-active': { light: '#111722', dark: '#111722' },
+  '--dsw-specific-sidebar-nav-item-hover': { light: '#0B0F16', dark: '#0B0F16' },
 }
 
 /** 各色板在 classic 基准上的增量映射。 */
