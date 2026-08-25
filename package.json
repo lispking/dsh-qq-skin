@@ -1,7 +1,7 @@
 {
   "name": "dsh-qq-skin",
   "description": "QQ 风格皮肤插件 for DeepSeek Harness: overlays a Tencent QQ messenger look on the Web client through the official theme token layer (ctx.theme.overrideTokens).",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "deepseek",
     "deepseek-harness",
