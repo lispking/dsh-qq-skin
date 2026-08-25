@@ -1,14 +1,18 @@
 # dsh-qq-skin
 
-A **QQ NT messenger skin** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`). Light and dark share one QQ NT language — **light mode is clean and restrained** (near-white surfaces, neutral borders/hover, brand blue `#12B7F5` and light-blue bubbles `#A8E3FF` as recognition accents), **dark mode is a calm blue-gray** (base `#101822`, desaturated, blue reserved for accents), instantly recognizable. Ships with three palette variants (Classic Blue / Vivid Purple / Clean White) and configurable toggles and sizing.
+A **QQ NT messenger skin** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`). Light and dark share one QQ NT language — **light mode is clean and restrained** (near-white surfaces, neutral borders/hover, brand blue `#12B7F5` and light-blue bubbles `#A8E3FF` as recognition accents), **dark mode is a calm blue-gray** (base `#101822`, desaturated, blue reserved for accents), instantly recognizable. Ships with five palette variants (Classic Blue / Vivid Purple / Clean White / Green Bubble / Deep Black), configurable toggles and sizing, plus a settings-panel visual switcher with hot reload.
 
 [中文](README.zh.md)
 
 > **How it works.** The skin is two reversible layers; it never registers a new theme id and never touches the user's Light/Dark/System preference.
-> - **Token layer** — stacks one `--dsw-*` semantic-token override via `ctx.theme.overrideTokens('dsh-qq-skin', …)`. Every token carries a `{ light, dark }` pair, so the skin follows the active base palette instead of fighting it. Light mode runs blue through surfaces, borders, interactions, and scrollbars; the dark palette is a `#101822`-based calm blue-gray scale where blue only accents (brand, bubbles, primary buttons). The set is generated per palette (`buildTokenOverrides(palette)`): the three palettes share the neutral blue-gray skeleton and differ only in the personality tokens.
-> - **Layout layer** — injects one global `<style>` tag (`qq-layout.ts`) for geometry and structure: the chat flow is centered and narrowed, user bubbles are light blue with a "tail", assistant rows get an avatar disc + white card (matched via `data-chat-flow-kind='assistant-step'`), the input area becomes a capsule, plus a slim conversation-header divider and QQ-styled timestamps and scrollbar. The brand area stays product-native — the QQ feel comes entirely from the blue token layer. Colors always come from `--dsw-*` tokens, and dark variants are gated by `body[data-ds-dark-theme]`. The CSS is generated from the config (`buildQQLayoutCss`).
+> - **Token layer** — stacks one `--dsw-*` semantic-token override via `ctx.theme.overrideTokens('dsh-qq-skin', ...)`. Every token carries a `{ light, dark }` pair, so the skin follows the active base palette instead of fighting it. Light mode runs blue through surfaces, borders, interactions, and scrollbars; the dark palette is a `#101822`-based calm blue-gray scale where blue only accents (brand, bubbles, primary buttons). The set is generated per palette (`buildTokenOverrides(palette)`): the five palettes share the neutral blue-gray skeleton and differ only in the personality tokens.
+> - **Layout layer** — injects one global `<style>` tag (`qq-layout.ts`) for geometry and structure: the chat flow is centered and narrowed, user bubbles are light blue with a "tail", assistant rows get an avatar disc + white card (matched via `data-chat-flow-kind='assistant-step'`), the input area becomes a capsule, plus a slim conversation-header divider, QQ-styled timestamps and scrollbar, and sidebar session-row hover/selected states. The brand area stays product-native — the QQ feel comes entirely from the blue token layer. Colors always come from `--dsw-*` tokens, and dark variants are gated by `body[data-ds-dark-theme]`. The CSS is generated from the config (`buildQQLayoutCss`).
 >
-> On unload both layers are fully removed through effect cleanup and the product look returns.
+> On unload both layers are fully removed through effect cleanup and the product look returns. Settings and config changes hot-reapply both layers via `QQSkinRuntime.update` without restarting the plugin.
+
+## Settings panel
+
+The skin registers a **QQ Skin** settings row in the App settings General section, with visual toggles for palette / bubble tail / assistant avatar / chat width. Changes apply immediately (hot reload remounts both layers) and are persisted to the user-settings document. The settings panel overrides the static config below.
 
 ## Configuration
 
@@ -16,7 +20,7 @@ The plugin receives config the cordis function-plugin way (`apply(ctx, config)`)
 
 | Option | Default | Meaning |
 | --- | --- | --- |
-| `palette` | `'classic'` | Palette variant: `classic` Classic Blue / `vivid` Vivid Purple / `clean` Clean White |
+| `palette` | `'classic'` | Palette variant: `classic` Classic Blue / `vivid` Vivid Purple / `clean` Clean White / `green` Green Bubble / `black` Deep Black |
 | `bubbleTail` | `true` | Small triangular "tail" on the right of user bubbles |
 | `assistantAvatar` | `true` | Official QQ-penguin avatar disc left of assistant messages |
 | `chatMaxWidth` | `880` | Max width of the chat flow (px) |
@@ -39,6 +43,7 @@ Example (set in the profile's plugin config):
 | Input bar | layout-layer capsule (`data-composer-card`) + toolbar button radius + `--dsw-specific-input-major` |
 | Conversation header | layout-layer slim divider (`header[class$='_header']`, never hits side panels) |
 | Message timestamps | layout-layer QQ-style chips (`data-time-hover-root` + `_timeStart/_timeEnd`) |
+| Sidebar session rows | layout-layer hover/selected fill + status-dot radius (`_sessionRow`/`_projectRow`/`_dot`) |
 | Scrollbar | layout-layer widening + radius (`data-conversation-scroll`) + `--dsw-alias-scrollbar-*` |
 | Sidebar (clean light / blue-gray dark) | `--dsw-specific-sidebar-fill` (`#F2F5F8`), `--dsw-specific-sidebar-nav-item-*` + layout-layer divider |
 | Text & borders | `--dsw-alias-label-*`, `--dsw-alias-border-l1..l4` (blue-tinted strokes) |
@@ -78,15 +83,15 @@ dsh plugin --profile web remove dsh-qq-skin
 ```
 
 The plugin declares `dsh.client` with `platform: web` and injects the `theme`
-service, so the Web boot loads its client bundle and applies the layer as soon
-as `ui-theme` is active.
+and settings-collaboration services, so the Web boot loads its client bundle
+and applies the layer as soon as `ui-theme` is active.
 
 ## Development
 
 ```sh
 pnpm install
 pnpm run typecheck   # tsc --noEmit
-pnpm test            # vitest (token shape + layout injection + apply wiring)
+pnpm test            # vitest (token shape + layout injection + runtime hot reload + settings wiring)
 pnpm run build       # tsc + tsdown → lib/index.js (host) + lib/client.js (browser closure-factory)
 ```
 
@@ -100,6 +105,11 @@ runtime via `document.createElement('style')` — the same shape as ui-theme's
 the client CSS Modules `[hash]_[local]` naming (`[class$="_localName"]`
 suffix matches) and the components' own `data-*` hooks, never on build-time
 hash values.
+
+The settings row (`settings-row.tsx`) uses inline token styles reading `--dsw-*`
+directly, so it adds no CSS Modules pipeline; `react` and the collaboration
+services stay external to the client bundle and resolve through the platform
+module table.
 
 ## License
 
