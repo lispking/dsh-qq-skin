@@ -113,6 +113,33 @@ describe('QQ skin token palettes', () => {
     expect(clean['--dsw-specific-bubble']).toMatchObject({ light: '#EAF4FB' })
   })
 
+  it('green palette remaps bubbles and static scale to classic QQ green', () => {
+    const green = buildTokenOverrides('green')
+    expect(green['--dsw-specific-bubble']).toMatchObject({
+      light: '#95EC69', dark: '#1E5C3C',
+    })
+    expect(green['--dsw-static-deepseek-500']).toMatchObject({
+      light: '#95EC69', dark: '#95EC69',
+    })
+    expect(green['--dsw-static-blue-500']).toMatchObject({
+      light: '#95EC69', dark: '#95EC69',
+    })
+    // 品牌仍为 QQ 蓝,绿只做气泡/静态色板点缀。
+    expect(green['--dsw-alias-brand-primary']).toMatchObject({
+      light: '#12B7F5', dark: '#4CB8FF',
+    })
+  })
+
+  it('black palette deepens the dark base while keeping blue as accent', () => {
+    const black = buildTokenOverrides('black')
+    expect(black['--dsw-alias-bg-base']).toMatchObject({ light: '#F7F9FB', dark: '#05070B' })
+    expect(black['--dsw-alias-bg-layer-1']).toMatchObject({ light: '#FFFFFF', dark: '#0B0F16' })
+    expect(black['--dsw-specific-sidebar-fill']).toMatchObject({ light: '#F2F5F8', dark: '#03050A' })
+    expect(black['--dsw-alias-brand-primary']).toMatchObject({
+      light: '#12B7F5', dark: '#4CB8FF',
+    })
+  })
+
   it('rejects unknown palettes by falling back to classic', () => {
     expect(buildTokenOverrides('neon' as never)).toEqual(QQ_TOKEN_OVERRIDES)
   })

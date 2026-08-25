@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { QQ_SKIN_DEFAULT_CONFIG, QQ_SKIN_PALETTES, resolveQQSkinConfig } from '../src/client/config.ts'
 
 describe('QQ skin config', () => {
-  it('declares the three palette variants', () => {
-    expect(QQ_SKIN_PALETTES).toEqual(['classic', 'vivid', 'clean'])
+  it('declares the five palette variants', () => {
+    expect(QQ_SKIN_PALETTES).toEqual(['classic', 'vivid', 'clean', 'green', 'black'])
   })
 
   it('falls back to defaults when no config is passed', () => {

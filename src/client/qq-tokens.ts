@@ -333,11 +333,114 @@ const CLEAN_TOKEN_DELTAS: ThemeTokenOverrides = {
   '--dsw-specific-sidebar-nav-item-hover': { light: '#F2F6F9', dark: '#16202C' },
 }
 
+/** green 经典绿气泡增量(经典 QQ 时代浅绿气泡 #95EC69,品牌仍为 QQ 蓝)。 */
+const GREEN_TOKEN_DELTAS: ThemeTokenOverrides = {
+  // 会话气泡:经典 QQ 浅绿
+  '--dsw-specific-bubble': { light: '#95EC69', dark: '#1E5C3C' },
+  '--dsw-specific-bubble-highlight': { light: '#7CD46A', dark: '#2A7A4E' },
+
+  // 交互 hover-accent:绿调点缀
+  '--dsw-alias-interactive-bg-hover-accent': { light: 'rgba(149, 236, 105, 0.16)', dark: 'rgba(149, 236, 105, 0.18)' },
+
+  // 按钮 ghost 选中:绿边点缀
+  '--dsw-alias-button-ghost-active-fill': { light: '#F0F9E8', dark: '#1B3A28' },
+  '--dsw-alias-button-ghost-active-hover': { light: '#E4F5D6', dark: '#224A33' },
+  '--dsw-alias-button-ghost-active-border': { light: '#95EC69', dark: '#7CD46A' },
+
+  // 静态色板:浅绿刻度(组件直引,整体重映射避免漏原厂蓝紫)
+  '--dsw-static-deepseek-50': { light: '#F4FBEE', dark: '#F4FBEE' },
+  '--dsw-static-deepseek-100': { light: '#E4F7D6', dark: '#E4F7D6' },
+  '--dsw-static-deepseek-200': { light: '#CDF0AD', dark: '#CDF0AD' },
+  '--dsw-static-deepseek-300': { light: '#AEE77F', dark: '#AEE77F' },
+  '--dsw-static-deepseek-400': { light: '#9AE06A', dark: '#9AE06A' },
+  '--dsw-static-deepseek-450': { light: '#95EC69', dark: '#95EC69' },
+  '--dsw-static-deepseek-500': { light: '#95EC69', dark: '#95EC69' },
+  '--dsw-static-deepseek-600': { light: '#6FC94A', dark: '#6FC94A' },
+  '--dsw-static-deepseek-700-delete': { light: '#5BA63E', dark: '#5BA63E' },
+  '--dsw-static-deepseek-800': { light: '#47852F', dark: '#47852F' },
+  '--dsw-static-deepseek-900': { light: '#336221', dark: '#336221' },
+  '--dsw-static-blue-50': { light: '#F4FBEE', dark: '#F4FBEE' },
+  '--dsw-static-blue-50p': { light: '#F0FAE8', dark: '#F0FAE8' },
+  '--dsw-static-blue-75': { light: '#ECF9E2', dark: '#ECF9E2' },
+  '--dsw-static-blue-100': { light: '#E4F7D6', dark: '#E4F7D6' },
+  '--dsw-static-blue-300': { light: '#AEE77F', dark: '#AEE77F' },
+  '--dsw-static-blue-400': { light: '#9AE06A', dark: '#9AE06A' },
+  '--dsw-static-blue-450': { light: '#95EC69', dark: '#95EC69' },
+  '--dsw-static-blue-500': { light: '#95EC69', dark: '#95EC69' },
+  '--dsw-static-blue-600': { light: '#6FC94A', dark: '#6FC94A' },
+  '--dsw-static-blue-800': { light: '#47852F', dark: '#47852F' },
+  '--dsw-static-blue-900': { light: '#336221', dark: '#336221' },
+  '--dsw-static-blue-950': { light: '#1F3D13', dark: '#1F3D13' },
+}
+
+/** black 深空黑增量(近黑基底,蓝只做点缀,暗色更沉)。 */
+const BLACK_TOKEN_DELTAS: ThemeTokenOverrides = {
+  // 背景:近黑基底
+  '--dsw-alias-bg-base': { light: '#F7F9FB', dark: '#05070B' },
+  '--dsw-alias-bg-layer-1': { light: '#FFFFFF', dark: '#0B0F16' },
+  '--dsw-alias-bg-layer-2': { light: '#FAFBFC', dark: '#111722' },
+  '--dsw-alias-bg-layer-3': { light: '#F1F4F7', dark: '#1B2432' },
+  '--dsw-alias-bg-overlay': { light: '#FFFFFF', dark: '#111722' },
+  '--dsw-alias-bg-module-platform': { light: '#F2F5F8', dark: '#090D13' },
+  '--dsw-alias-bg-multi-select': { light: '#EDF1F5', dark: '#1B2432' },
+  '--dsw-alias-bg-skeleton': { light: 'rgba(15, 23, 42, 0.06)', dark: 'rgba(148, 163, 184, 0.07)' },
+
+  // 边框:更弱的分割
+  '--dsw-alias-border-l1': { light: 'rgba(15, 23, 42, 0.08)', dark: 'rgba(255, 255, 255, 0.07)' },
+  '--dsw-alias-border-l2': { light: 'rgba(15, 23, 42, 0.12)', dark: 'rgba(255, 255, 255, 0.10)' },
+  '--dsw-alias-border-l2-darkmode-thin': { light: 'rgba(15, 23, 42, 0.08)', dark: 'rgba(255, 255, 255, 0.07)' },
+  '--dsw-alias-border-l3': { light: 'rgba(15, 23, 42, 0.16)', dark: 'rgba(255, 255, 255, 0.14)' },
+  '--dsw-alias-border-l4': { light: 'rgba(15, 23, 42, 0.20)', dark: 'rgba(255, 255, 255, 0.18)' },
+
+  // 文字:暗色提亮
+  '--dsw-alias-label-primary': { light: '#1F2A35', dark: '#EAF1F8' },
+  '--dsw-alias-label-secondary': { light: '#5A6B7A', dark: '#A6BACB' },
+  '--dsw-alias-label-tertiary': { light: '#7A8A97', dark: '#8499AB' },
+  '--dsw-alias-label-caption': { light: '#96A5B1', dark: '#61758A' },
+  '--dsw-alias-label-dimmed': { light: '#B4C0C9', dark: '#4A5C6E' },
+
+  // Markdown 暗色:更沉
+  '--dsw-alias-markdown-inline-code': { light: '#EEF1F5', dark: '#111722' },
+  '--dsw-alias-markdown-code-block': { light: '#F6F8FA', dark: '#04060A' },
+  '--dsw-alias-markdown-code-block-banner': { light: '#F1F4F7', dark: '#0B0F16' },
+  '--dsw-alias-markdown-code-segment-selected': { light: '#FFFFFF', dark: '#1B2432' },
+  '--dsw-alias-markdown-code-segment-unselected': { light: '#F1F4F7', dark: '#0B0F16' },
+  '--dsw-alias-markdown-citation': { light: '#EEF1F5', dark: '#111722' },
+  '--dsw-alias-markdown-tag': { light: '#EEF1F5', dark: '#111722' },
+  '--dsw-alias-markdown-placeholder': { light: '#F1F4F7', dark: '#0B0F16' },
+
+  // 浮层与提示:更沉
+  '--dsw-alias-toast-bg': { light: '#1B2A38', dark: '#0B0F16' },
+  '--dsw-alias-tooltip-bg': { light: '#20364F', dark: '#0B0F16' },
+
+  // 滚动条:更沉
+  '--dsw-alias-scrollbar-bg-l1': { light: '#D9DFE6', dark: '#1B2432' },
+  '--dsw-alias-scrollbar-bg-l2': { light: '#D9DFE6', dark: '#1B2432' },
+  '--dsw-alias-scrollbar-hover-l1': { light: '#B4BEC8', dark: '#2A3A4C' },
+  '--dsw-alias-scrollbar-hover-l2': { light: '#B4BEC8', dark: '#2A3A4C' },
+
+  // 会话专属:暗色气泡更沉
+  '--dsw-specific-bubble': { light: '#A8E3FF', dark: '#0E2638' },
+  '--dsw-specific-bubble-highlight': { light: '#7CD4FF', dark: '#16405C' },
+  '--dsw-specific-input-major': { light: '#FFFFFF', dark: '#0B0F16' },
+  '--dsw-specific-login-input': { light: '#FFFFFF', dark: '#0B0F16' },
+  '--dsw-specific-menu': { light: '#FFFFFF', dark: '#111722' },
+  '--dsw-specific-selector': { light: '#F1F4F7', dark: '#0B0F16' },
+  '--dsw-specific-tip': { light: '#F1F4F7', dark: '#0B0F16' },
+
+  // 侧边栏:更沉
+  '--dsw-specific-sidebar-fill': { light: '#F2F5F8', dark: '#03050A' },
+  '--dsw-specific-sidebar-nav-item-active': { light: '#FFFFFF', dark: '#111722' },
+  '--dsw-specific-sidebar-nav-item-hover': { light: '#E9EEF3', dark: '#0B0F16' },
+}
+
 /** 各色板在 classic 基准上的增量映射。 */
 const PALETTE_DELTAS: Record<QQSkinPalette, ThemeTokenOverrides> = {
   classic: {},
   vivid: VIVID_TOKEN_DELTAS,
   clean: CLEAN_TOKEN_DELTAS,
+  green: GREEN_TOKEN_DELTAS,
+  black: BLACK_TOKEN_DELTAS,
 }
 
 /**
