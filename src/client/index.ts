@@ -25,6 +25,7 @@ import { zh, en } from './settings-locales.ts'
 import type { QQSkinRowInjected } from './settings-row.tsx'
 import { QQSkinSettingsRow } from './settings-row.tsx'
 import { QQSkinRuntime } from './runtime.ts'
+import { QQSoundRuntime } from './qq-sound.ts'
 
 /** 依赖的服务:主题运行时 + 槽位 + 文案 + 设置作用域。 */
 export const inject = ['theme', 'slots', 'locale', 'settingsScope'] as const
@@ -47,6 +48,8 @@ export { QQ_SKIN_SETTINGS_NS }
 export function apply(ctx: ClientContext, config?: Partial<QQSkinConfig>): void {
   // 皮肤运行时:两层挂载 + 配置热更新。
   const runtime = new QQSkinRuntime(ctx, config)
+  // 音效运行时:监听新增助手节点,按 messageSound 开关启停。
+  const sound = new QQSoundRuntime(ctx, runtime.getConfig())
 
   // 设置作用域:绑定持久化分节,任意字段变更 → 合并配置 → 热更新两层,
   // 并同步设置行 store 让控件立即反映持久化结果(单一订阅)。
@@ -60,7 +63,9 @@ export function apply(ctx: ClientContext, config?: Partial<QQSkinConfig>): void 
   }
   ctx.effect(() => host.subscribe(() => {
     const section = host.getSnapshot().value
-    runtime.update(settingsToConfig(section, config))
+    const merged = settingsToConfig(section, config)
+    runtime.update(merged)
+    sound.update(merged)
     syncRow()
   }), 'dsh-qq-skin: settings adoption')
 
@@ -78,6 +83,8 @@ export function apply(ctx: ClientContext, config?: Partial<QQSkinConfig>): void 
       setBubbleTail: (value) => write('bubbleTail', value),
       setAssistantAvatar: (value) => write('assistantAvatar', value),
       setChatMaxWidth: (width) => write('chatMaxWidth', width),
+      setMessageSound: (value) => write('messageSound', value),
+      setTyping: (value) => write('typing', value),
     }
   }
   ctx.slots.inject('settings.general.item', () => ctx.slots.register({
