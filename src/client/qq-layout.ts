@@ -67,13 +67,26 @@ function bubbleTailRule(): string {
 `
 }
 
+/** 助手消息打字机揭示(fade-in + 轻微上移,200ms)。 */
+function typingRule(): string {
+  return `
+@keyframes dsh-qq-typing {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[data-chat-flow-kind='assistant-step'] > [data-slot] > [class$='_root'] {
+  animation: dsh-qq-typing 0.2s ease-out;
+}
+`
+}
+
 /**
  * 按配置生成 QQ 布局层 CSS。颜色一律走 `--dsw-*` token,几何/开关随
  * 配置变化;所有规则随 <style> 标签移除而还原。
  * @param config - 用户配置(可缺省,回落默认)。
  */
 export function buildQQLayoutCss(config: QQSkinConfig = QQ_SKIN_DEFAULT_CONFIG): string {
-  const { bubbleTail, assistantAvatar, chatMaxWidth } = config
+  const { bubbleTail, assistantAvatar, chatMaxWidth, typing } = config
   return `
 /* ── 消息流:居中收窄,像聊天窗口的画布 ─────────────────────────────── */
 [data-chat-flow] {
@@ -101,6 +114,7 @@ ${assistantAvatar ? avatarRule() : ''}
   background: var(--dsw-alias-bg-layer-1);
   border: 1px solid var(--dsw-alias-border-l1);
 }
+${typing ? typingRule() : ''}
 
 /* ── 用户气泡:QQ 蓝底、右上小圆角(尾巴朝右侧头像方向) ───────────── */
 [class$='_bubble'] {
@@ -174,6 +188,21 @@ header[class$='_header'] {
 [class$='_projectRow'][class$='_selected'] {
   background: var(--dsw-specific-sidebar-nav-item-active);
   box-shadow: inset 2px 0 0 var(--dsw-specific-sidebar-nav-item-active-accent);
+}
+/* 选中会话行右侧小红点角标(QQ NT 会话选中态的视觉点缀;非未读语义)。 */
+[class$='_sessionRow'][class$='_selected']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dsw-alias-brand-primary);
+  transform: translateY(-50%);
+}
+[class$='_sessionRow'] {
+  position: relative;
 }
 /* 行内状态点:QQ 风格小圆点(色板经 StateDot 的静态 token 已接管)。 */
 [class$='_sessionRow'] [class$='_dot'],

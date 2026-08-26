@@ -97,6 +97,18 @@ describe('QQ NT layout config branches', () => {
     expect(narrow).not.toContain(`max-width: ${QQ_SKIN_DEFAULT_CONFIG.chatMaxWidth}px`)
   })
 
+  it('typing keyframes are present by default and removable', () => {
+    expect(QQ_LAYOUT_CSS).toContain('@keyframes dsh-qq-typing')
+    expect(QQ_LAYOUT_CSS).toContain('animation: dsh-qq-typing 0.2s ease-out')
+    const off = buildQQLayoutCss({ ...QQ_SKIN_DEFAULT_CONFIG, typing: false })
+    expect(off).not.toContain('dsh-qq-typing')
+  })
+
+  it('selected session row carries a brand-color dot', () => {
+    expect(QQ_LAYOUT_CSS).toContain("[class$='_sessionRow'][class$='_selected']::after")
+    expect(QQ_LAYOUT_CSS).toContain('var(--dsw-alias-brand-primary)')
+  })
+
   it('covers the QQ NT conversation chrome hooks', () => {
     expect(QQ_LAYOUT_CSS).toContain("header[class$='_header']")
     expect(QQ_LAYOUT_CSS).toContain("[data-time-hover-root]")
