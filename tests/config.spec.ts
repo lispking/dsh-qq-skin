@@ -33,4 +33,16 @@ describe('QQ skin config', () => {
     expect(config.chatMaxWidth).toBe(720)
     expect(config.assistantAvatar).toBe(false)
   })
+
+  it('messageSound defaults to false and toggles via override', () => {
+    expect(resolveQQSkinConfig().messageSound).toBe(false)
+    expect(resolveQQSkinConfig({ messageSound: true }).messageSound).toBe(true)
+    expect(resolveQQSkinConfig({ messageSound: 'yes' as never }).messageSound).toBe(false)
+  })
+
+  it('typing defaults to true and toggles via override', () => {
+    expect(resolveQQSkinConfig().typing).toBe(true)
+    expect(resolveQQSkinConfig({ typing: false }).typing).toBe(false)
+    expect(resolveQQSkinConfig({ typing: 1 as never }).typing).toBe(true)
+  })
 })

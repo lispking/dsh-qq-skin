@@ -22,6 +22,8 @@ export interface QQSkinSettings {
   bubbleTail?: boolean
   assistantAvatar?: boolean
   chatMaxWidth?: number
+  messageSound?: boolean
+  typing?: boolean
 }
 
 /**
@@ -40,5 +42,7 @@ export function settingsToConfig(
     bubbleTail: s.bubbleTail ?? fallback?.bubbleTail ?? true,
     assistantAvatar: s.assistantAvatar ?? fallback?.assistantAvatar ?? true,
     chatMaxWidth: s.chatMaxWidth ?? fallback?.chatMaxWidth ?? 880,
+    messageSound: s.messageSound ?? fallback?.messageSound ?? false,
+    typing: s.typing ?? fallback?.typing ?? true,
   }
 }

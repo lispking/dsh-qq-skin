@@ -34,6 +34,10 @@ export interface QQSkinRowInjected {
   setAssistantAvatar: (value: boolean) => void
   /** 设置会话最大宽度(px)。 */
   setChatMaxWidth: (width: number) => void
+  /** 开关消息提示音。 */
+  setMessageSound: (value: boolean) => void
+  /** 开关打字机揭示动效。 */
+  setTyping: (value: boolean) => void
 }
 
 /** 完整组件 props:运行时份额 + store 份额 + locale 座 + 注入面。 */
@@ -81,6 +85,13 @@ const cardRowStyle = {
 const fieldRowStyle = {
   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
   gap: '8px',
+} satisfies CSSProperties
+
+/** 开关网格:2 列紧凑布局,4 个开关占两行而非四行,节省垂直空间。 */
+const toggleGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '4px 16px',
 } satisfies CSSProperties
 
 const fieldLabelStyle = {
@@ -190,6 +201,7 @@ function ToggleRow({ label, checked, onChange }: {
  */
 export function QQSkinSettingsRow({
   t, useStore, setPalette, setBubbleTail, setAssistantAvatar, setChatMaxWidth,
+  setMessageSound, setTyping,
 }: QQSkinRowComponentProps) {
   const config = useStore(s => s.config)
   const [widthDraft, setWidthDraft] = useState(String(config.chatMaxWidth))
@@ -221,17 +233,29 @@ export function QQSkinSettingsRow({
         ))}
       </div>
 
-      {/* 开关:气泡尾巴 / 企鹅头像 */}
-      <ToggleRow
-        label={t('row.bubbleTail')}
-        checked={config.bubbleTail}
-        onChange={setBubbleTail}
-      />
-      <ToggleRow
-        label={t('row.assistantAvatar')}
-        checked={config.assistantAvatar}
-        onChange={setAssistantAvatar}
-      />
+      {/* 开关网格:2×2 紧凑布局(气泡尾巴 / 企鹅头像 / 消息提示音 / 打字机) */}
+      <div style={toggleGridStyle}>
+        <ToggleRow
+          label={t('row.bubbleTail')}
+          checked={config.bubbleTail}
+          onChange={setBubbleTail}
+        />
+        <ToggleRow
+          label={t('row.assistantAvatar')}
+          checked={config.assistantAvatar}
+          onChange={setAssistantAvatar}
+        />
+        <ToggleRow
+          label={t('row.messageSound')}
+          checked={config.messageSound}
+          onChange={setMessageSound}
+        />
+        <ToggleRow
+          label={t('row.typing')}
+          checked={config.typing}
+          onChange={setTyping}
+        />
+      </div>
 
       {/* 会话宽度:暂存草稿,失焦/回车提交(与插件卡片相同的 staged 哲学) */}
       <div style={fieldRowStyle}>

@@ -13,4 +13,6 @@ export const QQSkinSettingsSchema: z<QQSkinSettings> = z.object({
   bubbleTail: z.boolean().default(true),
   assistantAvatar: z.boolean().default(true),
   chatMaxWidth: z.number().min(480).max(1600).default(880),
+  messageSound: z.boolean().default(false),
+  typing: z.boolean().default(true),
 })

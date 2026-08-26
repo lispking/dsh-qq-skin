@@ -18,6 +18,8 @@ export type QQSkinSettingsKey =
   | 'row.bubbleTail'
   | 'row.assistantAvatar'
   | 'row.chatMaxWidth'
+  | 'row.messageSound'
+  | 'row.typing'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -38,6 +40,8 @@ export const zh: Record<QQSkinSettingsKey, string> = {
   'row.bubbleTail': '气泡尾巴',
   'row.assistantAvatar': '企鹅头像',
   'row.chatMaxWidth': '会话宽度',
+  'row.messageSound': '消息提示音',
+  'row.typing': '打字机效果',
 }
 
 /** 英文文案。 */
@@ -52,4 +56,6 @@ export const en: Record<QQSkinSettingsKey, string> = {
   'row.bubbleTail': 'Bubble tail',
   'row.assistantAvatar': 'Penguin avatar',
   'row.chatMaxWidth': 'Chat width',
+  'row.messageSound': 'Message sound',
+  'row.typing': 'Typing effect',
 }

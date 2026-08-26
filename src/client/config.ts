@@ -23,6 +23,10 @@ export interface QQSkinConfig {
   assistantAvatar: boolean
   /** 聊天流最大宽度(px)。 */
   chatMaxWidth: number
+  /** 新助手消息"滴滴"提示音开关(默认关,避免打扰)。 */
+  messageSound: boolean
+  /** 助手消息打字机揭示动效开关(默认开)。 */
+  typing: boolean
 }
 
 /** 默认配置(与旧行为一致:经典蓝、气泡尾巴、企鹅头像、880px 宽)。 */
@@ -31,6 +35,8 @@ export const QQ_SKIN_DEFAULT_CONFIG: QQSkinConfig = {
   bubbleTail: true,
   assistantAvatar: true,
   chatMaxWidth: 880,
+  messageSound: false,
+  typing: true,
 }
 
 /** 合并用户配置与默认值,非法字段回落默认。 */
@@ -49,5 +55,11 @@ export function resolveQQSkinConfig(config?: Partial<QQSkinConfig>): QQSkinConfi
     chatMaxWidth: typeof raw.chatMaxWidth === 'number' && raw.chatMaxWidth > 0 && Number.isFinite(raw.chatMaxWidth)
       ? raw.chatMaxWidth
       : QQ_SKIN_DEFAULT_CONFIG.chatMaxWidth,
+    messageSound: typeof raw.messageSound === 'boolean'
+      ? raw.messageSound
+      : QQ_SKIN_DEFAULT_CONFIG.messageSound,
+    typing: typeof raw.typing === 'boolean'
+      ? raw.typing
+      : QQ_SKIN_DEFAULT_CONFIG.typing,
   }
 }
