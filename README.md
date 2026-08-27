@@ -10,6 +10,16 @@ A **QQ NT messenger skin** for [DeepSeek Harness](https://github.com/deepseek-ai
 >
 > On unload both layers are fully removed through effect cleanup and the product look returns. Settings and config changes hot-reapply both layers via `QQSkinRuntime.update` without restarting the plugin.
 
+## Screenshots
+
+The chat view in the Classic Blue palette: centered, narrowed chat flow, light-blue user bubbles with a "tail", and the penguin avatar disc on assistant rows:
+
+![Chat view](assets/chat.png)
+
+The **QQ Skin** settings row in the App settings General section, with the palette / bubble tail / assistant avatar / chat width toggles:
+
+![Settings panel](assets/settings.png)
+
 ## Settings panel
 
 The skin registers a **QQ Skin** settings row in the App settings General section, with visual toggles for palette / bubble tail / assistant avatar / chat width. Changes apply immediately (hot reload remounts both layers) and are persisted to the user-settings document. The settings panel overrides the static config below.
