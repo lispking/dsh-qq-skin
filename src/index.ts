@@ -4,14 +4,14 @@
  * 经 schemastery schema 校验)。
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { settingsNamespace } from '@deepseek-ai/dsh-settings'
+// Type-only: pulls dsh-settings 的 ctx.settings 服务声明。
+import type {} from '@deepseek-ai/dsh-settings'
 import { QQSkinSettingsSchema } from './settings-schema.ts'
 import { QQ_SKIN_SETTINGS_NS } from './client/settings.ts'
 
 /** 宿主插件体 —— 注册设置命名空间;浏览器半区贡献皮肤层。 */
 export function apply(ctx: Context): void {
-  const ns = settingsNamespace(QQ_SKIN_SETTINGS_NS)
   ctx.inject(['settings'], (settingsCtx) => {
-    settingsCtx.settings.register(ns, QQSkinSettingsSchema, { applies: 'live' })
+    settingsCtx.settings.register(QQ_SKIN_SETTINGS_NS, QQSkinSettingsSchema, { applies: 'live' })
   })
 }

@@ -63,6 +63,10 @@ App 设置里注册的 **「QQ 皮肤」** 设置行，可视化切换色板 / �
 
 未覆盖的 token 保持产品默认，QQ 皮肤运行中其他区域依然清晰一致。
 
+## 环境要求(dsh 版本)
+
+构建/运行目标为 **deepseek-harness(`dsh`) 0.1.2-alpha.5 及以上**。该行移除了客户端 `@deepseek-ai/dsh-client-runtime` 包(客户端 Runtime 拆分重构,2026-08):store 引擎改由 `@deepseek-ai/dsh-client-store` 提供,客户端上下文改为 cordis `Context` + 各 UI 包的 `/client` 类型合并,宿主侧设置注册改为 `ctx.settings.register` 直传命名空间字符串。更早的 dsh 版本与本插件不兼容(所依赖的包名已不存在,`pnpm i` 会报 `ERR_PNPM_WORKSPACE_PKG_NOT_FOUND`)。
+
 ## 安装
 
 一条命令即可装进 `web` profile：

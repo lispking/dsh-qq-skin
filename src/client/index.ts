@@ -11,8 +11,11 @@
  * + settings-row + settings-locales),色板/尾巴/头像/宽度可视化切换;
  * 变更经 SettingsScope 持久化并触发热更新。
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context as ClientContext } from '@deepseek-ai/cordis'
+// Type-only: pulls ui-theme 的 ctx.theme 服务声明。
 import type {} from '@deepseek-ai/dsh-client-ui-theme/client'
+// Type-only: pulls renderer 的 ctx.slots 服务声明。
+import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { BoundActions } from '@deepseek-ai/dsh-client-ui-slots'
 // Type-only: pulls ui-settings 的 ctx.settingsScope 服务声明(与 ui-theme 同款)。
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'

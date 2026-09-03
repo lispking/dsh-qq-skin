@@ -6,7 +6,8 @@
  * 配置重挂(布局重建 <style>,token 层以新色板重新 override);插件
  * dispose 时通过 effect 清理完整还原。
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context as ClientContext } from '@deepseek-ai/cordis'
+// Type-only: pulls ui-theme 的 ctx.theme 服务声明。
 import type {} from '@deepseek-ai/dsh-client-ui-theme/client'
 import { resolveQQSkinConfig, type QQSkinConfig } from './config.ts'
 import { buildTokenOverrides, QQ_SKIN_SOURCE } from './qq-tokens.ts'

@@ -63,6 +63,10 @@ Example (set in the profile's plugin config):
 
 Tokens that are **not** overridden keep the product default, so a QQ-skin run stays readable and consistent everywhere else.
 
+## Requirements (dsh version)
+
+Built and run against **deepseek-harness (`dsh`) 0.1.2-alpha.5 or later**. That line removed the client `@deepseek-ai/dsh-client-runtime` package (client "Runtime" split refactor, 2026-08): the store engine now comes from `@deepseek-ai/dsh-client-store`, the client context is cordis `Context` plus the `/client` type merges of the UI packages, and host-side settings registration takes the namespace string straight in `ctx.settings.register`. Earlier dsh versions are not compatible — the dependency no longer exists and `pnpm i` fails with `ERR_PNPM_WORKSPACE_PKG_NOT_FOUND`.
+
 ## Install
 
 One command installs the plugin into the `web` profile:

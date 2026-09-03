@@ -20,7 +20,6 @@ export default defineConfig({
     // 会把 defineStore 等运行时导出吞成 undefined。这里把用到的那几个
     // 指到纯 ESM 类型产物(lib/types/client/index.js,node 可正常导入)。
     alias: {
-      '@deepseek-ai/dsh-client-runtime/client': pkg('dsh-client-runtime'),
       '@deepseek-ai/dsh-client-ui-theme/client': pkg('dsh-client-ui-theme'),
       '@deepseek-ai/dsh-client-ui-settings/client': pkg('dsh-client-ui-settings'),
       '@deepseek-ai/dsh-client-locale/client': pkg('dsh-client-locale'),
